@@ -135,6 +135,7 @@ class ImageTransferBot(object):
         @param interwiki: Look for images in interwiki links, default false
         @type interwiki: boolean
         @param keep_name: Keep the filename and do not verify description while replacing, default false
+        @type keep_name: boolean
         """
         self.generator = generator
         self.interwiki = interwiki
