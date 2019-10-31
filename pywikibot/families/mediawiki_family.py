@@ -16,9 +16,6 @@ class Family(family.WikimediaFamily, family.SingleSiteFamily):
     """Family class for MediaWiki wiki."""
 
     name = 'mediawiki'
-    domain = 'localhost:8080'
+    domain = 'www.mediawiki.org'
 
     interwiki_forward = 'wikipedia'
-
-    def protocol(self, code):
-        return 'HTTP'
