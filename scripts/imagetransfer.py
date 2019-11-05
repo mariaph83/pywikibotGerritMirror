@@ -131,7 +131,7 @@ class ImageTransferBot(object):
         @param generator: the pages to work on
         @type generator: iterable
         @param targetSite: Site to send image to, default none
-        @type targetSite: APISite
+        @type targetSite: pywikibot.site.APISite
         @param interwiki: Look for images in interwiki links, default false
         @type interwiki: boolean
         @param keep_name: Keep the filename and do not verify description while replacing, default false
