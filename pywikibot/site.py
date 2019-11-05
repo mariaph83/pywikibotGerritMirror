@@ -671,7 +671,7 @@ class _InterwikiMap(object):
         Create an empty uninitialized interwiki map for the given site.
 
         @param site: Given site for which interwiki map is to be created
-        @type site: APISite
+        @type site: pywikibot.site.APISite
         """
         super(_InterwikiMap, self).__init__()
         self._site = site
@@ -734,7 +734,7 @@ class BaseSite(ComparableMixin):
         @param code: the site's language code
         @type code: str
         @param fam: wiki family name (optional)
-        @type fam: str or Family
+        @type fam: str or pywikibot.family.Family
         @param user: bot user name (optional)
         @type user: str
         @param sysop: sysop account user name (optional)
@@ -956,8 +956,8 @@ class BaseSite(ComparableMixin):
         """
         Return the site for a corresponding interwiki prefix.
 
-        @raises SiteDefinitionError: if the url given in the interwiki table
-            doesn't match any of the existing families.
+        @raises pywikibot.exceptions.SiteDefinitionError: if the url given in
+            the interwiki table doesn't match any of the existing families.
         @raises KeyError: if the prefix is not an interwiki prefix.
         """
         return self._interwikimap[prefix].site
@@ -993,8 +993,8 @@ class BaseSite(ComparableMixin):
         link. So if that link also contains an interwiki link it does follow
         it as long as it's a local link.
 
-        @raises SiteDefinitionError: if the url given in the interwiki table
-            doesn't match any of the existing families.
+        @raises pywikibot.exceptions.SiteDefinitionError: if the url given in
+            the interwiki table doesn't match any of the existing families.
         @raises KeyError: if the prefix is not an interwiki prefix.
         """
         return self._interwikimap[prefix].local
@@ -2049,7 +2049,8 @@ class APISite(BaseSite):
                            using unified login
         @type autocreate: bool
 
-        @raises NoUsername: Username is not recognised by the site.
+        @raises pywikibot.exceptions.NoUsername: Username is not recognised
+            by the site.
         @see: U{https://www.mediawiki.org/wiki/API:Login}
         """
         # TODO: this should include an assert that loginstatus
@@ -2241,7 +2242,8 @@ class APISite(BaseSite):
 
         @param sysop: If true, log in to sysop account (if available)
         @type sysop: bool
-        @raises UserBlocked: The logged in user/sysop account is blocked.
+        @raises pywikibot.exceptions.UserBlocked: The logged in user/sysop
+            account is blocked.
         """
         if self.is_blocked(sysop):
             # User blocked
@@ -2810,7 +2812,7 @@ class APISite(BaseSite):
         Return the data repository connected to this site.
 
         @return: The data repository if one is connected or None otherwise.
-        @rtype: DataSite or None
+        @rtype: pywikibot.site.DataSite or None
         """
         def handle_warning(mod, warning):
             return (mod == 'query' and re.match(
@@ -2853,7 +2855,8 @@ class APISite(BaseSite):
             for this site object.
         @rtype: pywikibot.Page or None
 
-        @raises UnknownExtension: site has no wikibase extension
+        @raises pywikibot.exceptions.UnknownExtension: site has no wikibase
+            extension
         @raises NotimplementedError: method not implemented for a wikibase site
         """
         if not self.has_data_repository:
@@ -3055,8 +3058,8 @@ class APISite(BaseSite):
         @type image: pywikibot.FilePage
         @param total: iterate no more than this number of pages in total.
         @raises TypeError: input page is not a FilePage.
-        @raises SiteDefinitionError: Site could not be defined for a returned
-            entry in API response.
+        @raises pywikibot.exceptions.SiteDefinitionError: Site could not be
+            defined for a returned entry in API response.
         """
         if not isinstance(page, pywikibot.FilePage):
             raise TypeError('Page %s must be a FilePage.' % page)
@@ -3203,10 +3206,10 @@ class APISite(BaseSite):
         @return: redirect target of page
         @rtype: pywikibot.Page
 
-        @raises IsNotRedirectPage: page is not a redirect
+        @raises pywikibot.exceptions.IsNotRedirectPage: page is not a redirect
         @raises RuntimeError: no redirects found
-        @raises CircularRedirect: page is a circular redirect
-        @raises InterwikiRedirectPage: the redirect target is
+        @raises pywikibot.exceptions.CircularRedirect: page is a circular redirect
+        @raises pywikibot.exceptions.InterwikiRedirectPage: the redirect target is
             on another site
         """
         if not self.page_isredirect(page):
@@ -4678,7 +4681,7 @@ class APISite(BaseSite):
         @param user: only iterate entries that match this user name
         @type user: basestring
         @param page: only iterate entries affecting this page
-        @type page: Page or basestring
+        @type page: pywikibot.page.Page or basestring
         @param namespace: namespace(s) to retrieve logevents from
         @type namespace: int or Namespace or an iterable of them
         @note: due to an API limitation, if namespace param contains multiple
@@ -4946,7 +4949,7 @@ class APISite(BaseSite):
         @type total: int
         @param top_only: if True, iterate only edits which are the latest
             revision (default: False)
-        @raises Error: either user or userprefix must be non-empty
+        @raises pywikibot.exceptions.Error: either user or userprefix must be non-empty
         @raises KeyError: a namespace identifier was not resolved
         @raises TypeError: a namespace identifier has an inappropriate
             type such as NoneType or bool
@@ -5306,10 +5309,11 @@ class APISite(BaseSite):
         @type undo: int
         @return: True if edit succeeded, False if it failed
         @rtype: bool
-        @raises Error: No text to be saved
-        @raises NoPage: recreate is disabled and page does not exist
-        @raises CaptchaError: config.solve_captcha is False and saving
-            the page requires solving a captcha
+        @raises pywikibot.exceptions.Error: No text to be saved
+        @raises pywikibot.exceptions.NoPage: recreate is disabled and page does
+            not exist
+        @raises pywikibot.exceptions.CaptchaError: config.solve_captcha is
+            False and saving the page requires solving a captcha
         """
         basetimestamp = True
         text_overrides = self._ep_text_overrides.intersection(kwargs.keys())
@@ -5779,7 +5783,7 @@ class APISite(BaseSite):
         @see: U{https://www.mediawiki.org/wiki/API:Delete}
 
         @param page: Page to be deleted.
-        @type page: Page
+        @type page: pywikibot.page.Page
         @param reason: Deletion reason.
         @type reason: basestring
 
@@ -7880,7 +7884,7 @@ class DataSite(APISite):
         is this site by definition.
 
         @return: this Site object
-        @rtype: DataSite
+        @rtype: pywikibot.site.DataSite
         """
         return self
 
